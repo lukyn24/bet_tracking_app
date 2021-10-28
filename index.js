@@ -6,7 +6,7 @@ const methodOverride = require('method-override')
 
 const Competition = require('./models/bets');
 
-mongoose.connect('mongodb://localhost:27017/sazkyApp', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/sazkyApp', {useNewUrlParser: true, useUnifiedTopology: true})
 .then (() => {
     console.log('CONNECION OPEN!!');
 })
@@ -26,6 +26,6 @@ app.get('/', async (req, res) => {
     res.render('index');
 })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening on port 3000`)
   })
