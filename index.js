@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override')
 
-const Competition = require('./models/bets');
+const Bet = require('./models/bets');
 
 mongoose.connect('mongodb://localhost:27017/sazkyApp', {useNewUrlParser: true, useUnifiedTopology: true})
 .then (() => {
@@ -24,6 +24,35 @@ app.use(methodOverride('_method'));
 
 app.get('/', async (req, res) => {
     res.render('index');
+})
+
+app.get('/bets/new', (req, res) => {
+    res.render('bets/new')
+})
+
+app.post('/bets', async (req, res) => {
+    const newBet = new Bet(req.body);
+    await newBet.save();
+    console.log(newBet);
+    res.redirect('/')
+})
+
+app.get('/list', async (req, res) => {
+    const bets = await Bet.find({});
+    res.render('bets/list', { bets });
+})
+
+// TADY JE MUJ SEZNAM!!
+app.get('/picks', async (req, res) => {
+    const bets = await Bet.find({});
+    res.render('bets/picks', { bets });
+})
+
+app.get('/picks/:compId/edit', async (req, res) => {
+    const { compId } = req.params;
+    const bets = await Bet.find({ compId : compId })
+    const bet = bets[0];
+    res.render('bets/edit', { bet })
 })
 
 app.listen(3000, () => {

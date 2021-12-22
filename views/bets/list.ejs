@@ -1,0 +1,19 @@
+<%- include('../partials/header')%>
+
+<title>Sportovní sázení</title>
+
+<%- include('../partials/navbar')%>
+
+<% for (let bet of bets) { %> 
+
+    <% if (bet.result == 'ok') { %> 
+        <p class="green"><%=bet.day%>/<%=bet.month%>/<%=bet.year%> - <%=bet.sport%> - <%=bet.game%> // <%=bet.pick%> // <%=bet.odds%> // <%=bet.stake%>/10</p>
+    <% } else if (bet.result == 'ko') { %>
+        <p class="red"><%=bet.day%>/<%=bet.month%>/<%=bet.year%> - <%=bet.sport%> - <%=bet.game%> // <%=bet.pick%> // <%=bet.odds%> // <%=bet.stake%>/10</p>
+    <% } else { %>
+        <p><%=bet.day%>/<%=bet.month%>/<%=bet.year%> - <%=bet.sport%> - <%=bet.game%> // <%=bet.pick%> // <%=bet.odds%> // <%=bet.stake%>/10</p>
+    <% } %> 
+
+<% } %> 
+
+<%- include('../partials/footer')%>

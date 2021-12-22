@@ -1,0 +1,13 @@
+<%- include('../partials/header')%>
+
+<title>Sportovní sázení</title>
+
+<%- include('../partials/navbar')%>
+
+<% for (let bet of bets) { %> 
+
+    <p><a href="/picks/<%=bet.compId%>/edit"><%=bet.day%>/<%=bet.month%>/<%=bet.year%> - <%=bet.game%></a></p>
+
+<% } %> 
+
+<%- include('../partials/footer')%>
