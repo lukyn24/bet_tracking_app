@@ -51,10 +51,10 @@ app.get('/picks', async (req, res) => {
 app.get('/picks/:compId/edit', async (req, res) => {
     const { compId } = req.params;
     const bets = await Bet.find({ compId : compId })
-    const bet = bets[0];
+    const bet = bets[0];he
     res.render('bets/edit', { bet })
 })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening on port 3000`)
   })
