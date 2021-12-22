@@ -6,7 +6,7 @@ const methodOverride = require('method-override')
 
 const Bet = require('./models/bets');
 
-mongoose.connect('mongodb://localhost:27017/sazkyApp', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect((process.env.MONGODB_URI || 'mongodb://localhost:27017/sazkyApp'), {useNewUrlParser: true, useUnifiedTopology: true})
 .then (() => {
     console.log('CONNECION OPEN!!');
 })
