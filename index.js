@@ -34,7 +34,7 @@ app.post('/bets', async (req, res) => {
     const newBet = new Bet(req.body);
     await newBet.save();
     console.log(newBet);
-    res.redirect('/')
+    res.redirect('/bets')
 })
 
 app.get('/list', async (req, res) => {
@@ -43,16 +43,28 @@ app.get('/list', async (req, res) => {
 })
 
 // TADY JE MUJ SEZNAM!!
-app.get('/picks', async (req, res) => {
+app.get('/bets', async (req, res) => {
     const bets = await Bet.find({});
-    res.render('bets/picks', { bets });
+    res.render('bets/show', { bets });
 })
 
-app.get('/picks/:compId/edit', async (req, res) => {
+app.get('/bets/:compId/edit', async (req, res) => {
     const { compId } = req.params;
     const bets = await Bet.find({ compId : compId })
-    const bet = bets[0];he
+    const bet = bets[0];
     res.render('bets/edit', { bet })
+})
+
+app.put('/bets/:compId', async (req, res) => {
+    const { compId } = req.params;
+    const bet = await Bet.findOneAndUpdate({ compId : compId }, req.body, { runValidators: true, new: true })
+    res.redirect(`/bets`);
+})
+
+app.delete('/bets/:compId', async (req, res) => {
+    const { compId } = req.params;
+    const deletedBet = await Bet.findOneAndDelete({ compId : compId });
+    res.redirect('/bets');
 })
 
 app.listen(process.env.PORT || 3000, () => {
