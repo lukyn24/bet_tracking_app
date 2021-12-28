@@ -14,3 +14,16 @@ body {
 .red {
     color: red;
 }
+
+#stats {
+    border-collapse: collapse;
+}
+
+#stats td, #stats th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#stats tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

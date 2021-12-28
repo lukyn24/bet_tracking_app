@@ -1,0 +1,162 @@
+<%- include('./partials/header')%>
+
+    <title>Sportovní sázení</title>
+
+    <%- include('./partials/navbar')%>
+
+        <h1>Statistiky</h1>
+
+        <table id='stats'>
+            <tr>
+                <th>DATE</th>
+                <th>OK - VOID - KO</th>
+                <th>STAKES</th>
+                <th>PROFIT</th>
+                <th>YIELD</th>
+            </tr>
+            <% if (months22.length> 0) { %>
+                <% for (month of months22) { %>
+                    <% if (month.profit> 0) { %>
+                        <tr class='green'>
+                            <td>
+                                <%=month.month%>/<%=month.year%>
+                            </td>
+                            <td>
+                                <%=month.ok%> - <%=month.ko%> - <%=month.void%>
+                            </td>
+                            <td>
+                                <%=month.stakes%>
+                            </td>
+                            <td>
+                                <%=month.profit%>
+                            </td>
+                            <td>
+                                <%=month.yield%>
+                            </td>
+                        </tr>
+                    <% } else if (month.profit < 0) { %>
+                        <tr class='red'>
+                            <td>
+                                <%=month.month%>/<%=month.year%>
+                            </td>
+                            <td>
+                                <%=month.ok%> - <%=month.ko%> - <%=month.void%>
+                            </td>
+                            <td>
+                                <%=month.stakes%>
+                            </td>
+                            <td>
+                                <%=month.profit%>
+                            </td>
+                            <td>
+                                <%=month.yield%>
+                            </td>
+                        </tr>
+                    <% } else { %>
+                        <tr>
+                            <td>
+                                <%=month.month%>/<%=month.year%>
+                            </td>
+                            <td>
+                                <%=month.ok%> - <%=month.ko%> - <%=month.void%>
+                            </td>
+                            <td>
+                                <%=month.stakes%>
+                            </td>
+                            <td>
+                                <%=month.profit%>
+                            </td>
+                            <td>
+                                <%=month.yield%>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% } %>
+            <% } %>
+            <% if (months21.length> 0) { %>
+                <% for (month of months21) { %>
+                    <% if (month.profit> 0) { %>
+                        <tr class='green'>
+                            <td>
+                                <%=month.month%>/<%=month.year%>
+                            </td>
+                            <td>
+                                <%=month.ok%> - <%=month.ko%> - <%=month.void%>
+                            </td>
+                            <td>
+                                <%=month.stakes%>
+                            </td>
+                            <td>
+                                <%=month.profit%>
+                            </td>
+                            <td>
+                                <%=month.yield%>
+                            </td>
+                        </tr>
+                    <% } else if (month.profit < 0) { %>
+                        <tr class='red'>
+                            <td>
+                                <%=month.month%>/<%=month.year%>
+                            </td>
+                            <td>
+                                <%=month.ok%> - <%=month.ko%> - <%=month.void%>
+                            </td>
+                            <td>
+                                <%=month.stakes%>
+                            </td>
+                            <td>
+                                <%=month.profit%>
+                            </td>
+                            <td>
+                                <%=month.yield%>
+                            </td>
+                        </tr>
+                    <% } else { %>
+                        <tr>
+                            <td>
+                                <%=month.month%>/<%=month.year%>
+                            </td>
+                            <td>
+                                <%=month.ok%> - <%=month.ko%> -
+                                        <%=month.void%>
+                            </td>
+                            <td>
+                                <%=month.stakes%>
+                            </td>
+                            <td>
+                                <%=month.profit%>
+                            </td>
+                            <td>
+                                <%=month.yield%>
+                            </td>
+                        </tr>
+                    <% } %>
+                <% } %>
+            <% } %>
+        </table>
+
+        <!-- <% if (months22.length > 0) { %> 
+    <% for (month of months22) { %>
+        <% if (month.profit > 0) { %>
+            <p class='green'><b><%=month.month%>/<%=month.year%></b> // <%=month.ok%>-<%=month.ko%>-<%=month.void%> // </p>
+        <% } else if (month.profit < 0) { %> 
+            <p class='red'><b><%=month.month%>/<%=month.year%></b> // <%=month.ok%>-<%=month.ko%>-<%=month.void%></p>
+        <% } else { %>
+            <p><b><%=month.month%>/<%=month.year%></b> // <%=month.ok%>-<%=month.ko%>-<%=month.void%></p>
+        <% } %> 
+    <% } %> 
+<% } %> 
+
+<% if (months21.length > 0) { %> 
+    <% for (month of months21) { %>
+        <% if (month.profit > 0) { %>
+            <p class='green'><b><%=month.month%>/<%=month.year%></b> // <%=month.ok%>-<%=month.ko%>-<%=month.void%></p>
+        <% } else if (month.profit < 0) { %> 
+            <p class='red'><b><%=month.month%>/<%=month.year%></b> // <%=month.ok%>-<%=month.ko%>-<%=month.void%></p>
+        <% } else { %>
+            <p><b><%=month.month%>/<%=month.year%></b> // <%=month.ok%>-<%=month.ko%>-<%=month.void%></p>
+        <% } %> 
+    <% } %> 
+<% } %>  -->
+
+        <%- include('./partials/footer')%>
