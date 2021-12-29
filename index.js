@@ -6,15 +6,16 @@ const methodOverride = require('method-override')
 
 const Bet = require('./models/bets');
 const Month = require('./models/months');
+const User = require('./models/user');
 
 mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || /* 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net' || */ 'mongodb://127.0.0.1:27017/sazkyApp'), { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('CONNECION OPEN!!');
-    })
-    .catch((err) => {
-        console.log("OH NO MONGO ERROR!!")
-        console.log(err)
-    })
+.then(() => {
+    console.log('CONNECION OPEN!!');
+})
+.catch((err) => {
+    console.log("OH NO MONGO ERROR!!")
+    console.log(err)
+})
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -37,7 +38,8 @@ app.get('/bets/new', (req, res) => {
 app.post('/bets', async (req, res) => {
     const newBet = new Bet(req.body);
     await newBet.save();
-    console.log(newBet);
+    await modelateStats(2022);
+    await modelateUsers();
     res.redirect('/bets')
 })
 
@@ -64,20 +66,34 @@ app.get('/bets/:compId/edit', async (req, res) => {
 app.put('/bets/:compId', async (req, res) => {
     const { compId } = req.params;
     const bet = await Bet.findOneAndUpdate({ compId: compId }, req.body, { runValidators: true, new: true })
+    await modelateStats(2022);
+    await modelateUsers();
     res.redirect(`/bets`);
 })
 
 app.delete('/bets/:compId', async (req, res) => {
     const { compId } = req.params;
     const deletedBet = await Bet.findOneAndDelete({ compId: compId });
+    await modelateStats(2022);
+    await modelateUsers();
     res.redirect('/bets');
 })
 
 app.get('/stats', async (req, res) => {
-    const months22 = await modelateStats(2022);
-    const months21 = await modelateStats(2021);
+    const months22 = await Month.find({ year: 2022 });
+    const months21 = await Month.find({ year: 2021 });
+
+    await sortMonths(months22);
+    await sortMonths(months21);
 
     res.render('stats', { months22, months21 });
+})
+
+app.get('/user/:code', async (req, res) => {
+    const { code } = req.params;
+    const foundUser = await User.find({ code: code });
+    const specUser = foundUser[0];
+    res.render('user', { specUser });
 })
 
 app.listen(process.env.PORT || 3000, () => {
@@ -121,14 +137,28 @@ const modelateStats = async (year) => {
                 "profit": parseFloat(profit.toFixed(2)),
                 "yield": parseFloat(roi.toFixed(2))
             }
-            months.push(newMonth);
             const month = await Month.findOneAndUpdate({ year: year, month: i }, newMonth, { runValidators: true, new: true, upsert: true })
         }
     }
+}
 
-    await sortMonths(months);
+const modelateUsers = async () => {
+    const users = await User.find();
+    const months = await Month.find({ year: 2022 });
+    let profit = 0;
+    for (let month of months) {
+        profit += parseFloat(month.profit);
+    }
+    for (us of users) {
+        const unit = (us.handle == 'TG1') ? us.state2020 * 0.005 : us.state2020 * 0.003;
+        const userProfit = profit * unit * us.share;
+        const currentState = us.state2020 + userProfit;
+        const whithdrawals = us.whitdrawals;
+        const roiOverall = (((currentState + whithdrawals) / (us.deposits + whithdrawals) - 1) * 100).toFixed(1);
+        const roi2022 = ((currentState / us.state2020 - 1) * 100).toFixed(1)
 
-    return months;
+        const updateUser = await User.findOneAndUpdate({ code: us.code }, { currentState: currentState, roiOverall: roiOverall, roi2022: roi2022 }, { runValidators: true, new: true });
+    }
 }
 
 const sortMonths = (months) => {
