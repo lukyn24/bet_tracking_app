@@ -9,7 +9,7 @@ const Month = require('./models/months');
 const User = require('./models/user');
 
 mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 
- 'mongodb://127.0.0.1:27017/sazkyApp' || 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net'), { useNewUrlParser: true, useUnifiedTopology: true })
+ /* 'mongodb://127.0.0.1:27017/sazkyApp' || */ 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net'), { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
     console.log('CONNECION OPEN!!');
 })
