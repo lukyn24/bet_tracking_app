@@ -8,7 +8,8 @@ const Bet = require('./models/bets');
 const Month = require('./models/months');
 const User = require('./models/user');
 
-mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net' || 'mongodb://127.0.0.1:27017/sazkyApp'), { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 
+ 'mongodb://127.0.0.1:27017/sazkyApp' || 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net'), { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
     console.log('CONNECION OPEN!!');
 })
@@ -100,6 +101,10 @@ app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening on port 3000`)
 })
 
+app.get('/login', async (req, res) => {
+    res.render('login');
+})
+
 const modelateStats = async (year) => {
     const months = [];
     for (let i = 1; i < 13; i++) {
@@ -150,7 +155,7 @@ const modelateUsers = async () => {
         profit += parseFloat(month.profit);
     }
     for (us of users) {
-        const unit = (us.handle == 'TG1') ? us.state2020 * 0.005 : us.state2020 * 0.003;
+        const unit = (us.handle == 'TG1') ? 220 : us.state2020 * 0.0025;
         const userProfit = profit * unit * us.share;
         const currentState = us.state2020 + userProfit;
         const whithdrawals = us.whitdrawals;
