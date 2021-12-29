@@ -8,7 +8,7 @@ const Bet = require('./models/bets');
 const Month = require('./models/months');
 const User = require('./models/user');
 
-mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || /* 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net' || */ 'mongodb://127.0.0.1:27017/sazkyApp'), { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net' || 'mongodb://127.0.0.1:27017/sazkyApp'), { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
     console.log('CONNECION OPEN!!');
 })
