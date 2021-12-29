@@ -143,6 +143,8 @@ const modelateStats = async (year) => {
                 "yield": parseFloat(roi.toFixed(2))
             }
             const month = await Month.findOneAndUpdate({ year: year, month: i }, newMonth, { runValidators: true, new: true, upsert: true })
+        } else {
+            const monthBets = await Month.findOneAndDelete({ year: year, month: i });
         }
     }
 }
