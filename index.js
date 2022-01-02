@@ -8,15 +8,15 @@ const Bet = require('./models/bets');
 const Month = require('./models/months');
 const User = require('./models/user');
 
-mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI ||
-    /* 'mongodb://127.0.0.1:27017/sazkyApp' || */ 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net'), { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('CONNECION OPEN!!');
-    })
-    .catch((err) => {
-        console.log("OH NO MONGO ERROR!!")
-        console.log(err)
-    })
+mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 
+ /* 'mongodb://127.0.0.1:27017/sazkyApp' || */ 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net'), { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => {
+    console.log('CONNECION OPEN!!');
+})
+.catch((err) => {
+    console.log("OH NO MONGO ERROR!!")
+    console.log(err)
+})
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -30,12 +30,79 @@ app.get('/', async (req, res) => {
     res.render('index');
 })
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Listening on port 3000`)
+//new bet
+app.get('/bets/new', (req, res) => {
+    res.render('bets/new')
+})
+
+//new bet post
+app.post('/bets', async (req, res) => {
+    const newBet = new Bet(req.body);
+    await newBet.save();
+    await modelateStats(2022);
+    await modelateUsers();
+    res.redirect('/bets')
+})
+
+//viewable list
+app.get('/list', async (req, res) => {
+    const bets = await Bet.find({});
+    bets.sort((a, b) => b.compId - a.compId)
+    res.render('bets/list', { bets });
+})
+
+// my editable list
+app.get('/bets', async (req, res) => {
+    const bets = await Bet.find({});
+    res.render('bets/show', { bets });
+})
+
+app.get('/bets/:compId/edit', async (req, res) => {
+    const { compId } = req.params;
+    const bets = await Bet.find({ compId: compId })
+    const bet = bets[0];
+    res.render('bets/edit', { bet })
+})
+
+app.put('/bets/:compId', async (req, res) => {
+    const { compId } = req.params;
+    const bet = await Bet.findOneAndUpdate({ compId: compId }, req.body, { runValidators: true, new: true })
+    await modelateStats(2022);
+    await modelateUsers();
+    res.redirect(`/bets`);
+})
+
+app.delete('/bets/:compId', async (req, res) => {
+    const { compId } = req.params;
+    const deletedBet = await Bet.findOneAndDelete({ compId: compId });
+    await modelateStats(2022);
+    await modelateUsers();
+    res.redirect('/bets');
+})
+
+app.get('/stats', async (req, res) => {
+    const months22 = await Month.find({ year: 2022 });
+    const months21 = await Month.find({ year: 2021 });
+
+    await sortMonths(months22);
+    await sortMonths(months21);
+
+    res.render('stats', { months22, months21 });
+})
+
+app.get('/user/:code', async (req, res) => {
+    const { code } = req.params;
+    const foundUser = await User.find({ code: code });
+    const specUser = foundUser[0];
+    res.render('user', { specUser });
 })
 
 app.get('/login', async (req, res) => {
     res.render('login');
+})
+
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Listening on port 3000`)
 })
 
 const modelateStats = async (year) => {
@@ -90,7 +157,7 @@ const modelateUsers = async () => {
         profit += parseFloat(month.profit);
     }
     for (us of users) {
-        const unit = (us.handle == 'TG1') ? 220 : us.state2020 * 0.0025;
+        const unit = (us.handle == 'TG1') ? 220 : us.state2020 * 0.003;
         const userProfit = profit * unit * us.share;
         const currentState = us.state2020 + userProfit;
         const whithdrawals = us.whitdrawals;
