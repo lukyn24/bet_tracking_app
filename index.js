@@ -90,7 +90,7 @@ const modelateUsers = async () => {
         profit += parseFloat(month.profit);
     }
     for (us of users) {
-        const unit = (us.handle == 'TG1') ? 220 : us.state2020 * 0.003;
+        const unit = (us.handle == 'TG1') ? 220 : us.state2020 * 0.0025;
         const userProfit = profit * unit * us.share;
         const currentState = us.state2020 + userProfit;
         const whithdrawals = us.whitdrawals;
