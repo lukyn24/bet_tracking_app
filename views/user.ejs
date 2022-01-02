@@ -1,0 +1,20 @@
+<%- include('./partials/header')%>
+
+<title>Sportovní sázení</title>
+
+<%- include('./partials/navbar')%>
+
+<h1><%= specUser.handle %></h1>
+
+<div class='user'>
+
+<p>Počáteční stav: <%=specUser.deposits%></p>
+<p>Stav k 1.1.2022: <%=specUser.state2020%></p>
+<p id='stav' >Aktuální stav: <%=specUser.currentState.toFixed(0)%></p>
+<p class=<%= specUser.roiOverall > 0 ? 'green' : specUser.roiOverall < 0 ? 'red' : '' %> >Zhodnocení od počátku: <%=specUser.roiOverall%>%</p>
+<p class=<%= specUser.roi2022 > 0 ? 'green' : specUser.roi2022 < 0 ? 'red' : '' %> >Zhodnocení v roce 2020: <%=specUser.roi2022%>%</p>
+<p>Výběry: <%=specUser.whitdrawals%></p>
+
+</div>
+
+<%- include('./partials/footer')%>

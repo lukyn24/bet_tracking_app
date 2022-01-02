@@ -3,6 +3,35 @@ body {
 }
 
 .site-container {
-    padding: 0 0 10px 10px;
+    padding: 10px;
     background-color: white;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+#stats {
+    border-collapse: collapse;
+}
+
+#stats td, #stats th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#stats tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.user {
+    font-size: 20px;
+}
+
+#stav {
+    font-size: 32px;
 }

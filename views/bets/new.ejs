@@ -1,0 +1,73 @@
+<%- include('../partials/header')%>
+
+<title>Sportovní sázení</title>
+
+<%- include('../partials/navbar')%>
+
+<h1>New Pick</h1>
+
+<form action="/bets" method="POST">
+    <p>
+        <label for="day">Day: </label>
+        <select name="day" id="day">
+            <% for (let i = 1; i < 32; i++) { %>
+                <option value="<%=i%>"><%=i%></option>
+            <% } %> 
+        </select>
+        <label for="month">Month: </label>
+        <select name="month" id="month">
+            <% for (let i = 1; i < 13; i++) { %>
+                <option value="<%=i%>"><%=i%></option>
+            <% } %> 
+        </select>
+        <label for="year">Year: </label>
+        <select name="year" id="year">
+            <% for (let i = 2021; i < 2023; i++) { %>
+                <option value="<%=i%>"><%=i%></option>
+            <% } %> 
+        </select>
+    </p>
+    <p>
+        <label for="sport">Sport: </label>
+        <select name="sport" id="sport">
+            <option value="fotbal">Football</option>
+            <option value="hokej">Ice Hockey</option>
+            <option value="basket">Basketball</option>
+            <option value="ostatni">Other</option>
+        </select>
+    </p>
+    <p>
+        <label for="game">Game: </label>
+        <input type="text" name="game" id="game">
+    </p>
+    <p>
+        <label for="pick">Pick: </label>
+        <input type="text" name="pick" id="pick">
+    </p>
+    <p>
+        <label for="odds">Odds: </label>
+        <input type="number" name="odds" id="odds" step="any">
+    </p>
+    <p>
+        <label for="stake">Day: </label>
+        <select name="stake" id="stake">
+            <% for (let i = 1; i < 11; i++) { %>
+                <option value="<%=i%>"><%=i%></option>
+            <% } %> 
+        </select>
+    </p>
+    <p>
+        <label for="result">Result: </label>
+        <select name="result" id="result">
+            <option value="non">NON</option>
+            <option value="ok">OK</option>
+            <option value="half_ok">1/2 OK</option>
+            <option value="void">VOID</option>
+            <option value="half_ko">1/2 KO</option>
+            <option value="ko">KO</option>
+        </select>
+    </p>
+    <button>Uložit</button>
+</form>
+
+<%- include('../partials/footer')%>
