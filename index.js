@@ -8,14 +8,8 @@ const Bet = require('./models/bets');
 const Month = require('./models/months');
 const User = require('./models/user');
 
-<<<<<<< HEAD
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/sazkyApp', {useNewUrlParser: true, useUnifiedTopology: true})
 .then (() => {
-=======
-mongoose.connect((process.env.MONGODB_URI || process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 
- /* 'mongodb://127.0.0.1:27017/sazkyApp' || */ 'mongodb+srv://lukash:10295monika@cluster0.kd5x9.mongodb.net'), { useNewUrlParser: true, useUnifiedTopology: true })
-.then(() => {
->>>>>>> 6abf46cdaedcc9ce3f2b69e417ece94d6d7b82c9
     console.log('CONNECION OPEN!!');
 })
 .catch((err) => {
@@ -35,76 +29,6 @@ app.get('/', async (req, res) => {
     res.render('index');
 })
 
-<<<<<<< HEAD
-=======
-//new bet
-app.get('/bets/new', (req, res) => {
-    res.render('bets/new')
-})
-
-//new bet post
-app.post('/bets', async (req, res) => {
-    const newBet = new Bet(req.body);
-    await newBet.save();
-    await modelateStats(2022);
-    await modelateUsers();
-    res.redirect('/bets')
-})
-
-//viewable list
-app.get('/list', async (req, res) => {
-    const bets = await Bet.find({});
-    bets.sort((a, b) => b.compId - a.compId)
-    res.render('bets/list', { bets });
-})
-
-// my editable list
-app.get('/bets', async (req, res) => {
-    const bets = await Bet.find({});
-    res.render('bets/show', { bets });
-})
-
-app.get('/bets/:compId/edit', async (req, res) => {
-    const { compId } = req.params;
-    const bets = await Bet.find({ compId: compId })
-    const bet = bets[0];
-    res.render('bets/edit', { bet })
-})
-
-app.put('/bets/:compId', async (req, res) => {
-    const { compId } = req.params;
-    const bet = await Bet.findOneAndUpdate({ compId: compId }, req.body, { runValidators: true, new: true })
-    await modelateStats(2022);
-    await modelateUsers();
-    res.redirect(`/bets`);
-})
-
-app.delete('/bets/:compId', async (req, res) => {
-    const { compId } = req.params;
-    const deletedBet = await Bet.findOneAndDelete({ compId: compId });
-    await modelateStats(2022);
-    await modelateUsers();
-    res.redirect('/bets');
-})
-
-app.get('/stats', async (req, res) => {
-    const months22 = await Month.find({ year: 2022 });
-    const months21 = await Month.find({ year: 2021 });
-
-    await sortMonths(months22);
-    await sortMonths(months21);
-
-    res.render('stats', { months22, months21 });
-})
-
-app.get('/user/:code', async (req, res) => {
-    const { code } = req.params;
-    const foundUser = await User.find({ code: code });
-    const specUser = foundUser[0];
-    res.render('user', { specUser });
-})
-
->>>>>>> 6abf46cdaedcc9ce3f2b69e417ece94d6d7b82c9
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening on port 3000`)
 })
