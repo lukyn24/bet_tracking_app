@@ -97,12 +97,12 @@ app.get('/user/:code', async (req, res) => {
     res.render('user', { specUser });
 })
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Listening on port 3000`)
-})
-
 app.get('/login', async (req, res) => {
     res.render('login');
+})
+
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Listening on port 3000`)
 })
 
 const modelateStats = async (year) => {
