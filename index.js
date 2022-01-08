@@ -161,7 +161,7 @@ const modelateUsers = async () => {
         const userProfit = profit * unit * us.share;
         const currentState = us.state2020 + userProfit;
         const whithdrawals = us.whitdrawals;
-        const roiOverall = (((currentState + whithdrawals) / (us.deposits + whithdrawals) - 1) * 100).toFixed(1);
+        const roiOverall = (((currentState + whithdrawals) / (us.deposits) - 1) * 100).toFixed(1);
         const roi2022 = ((currentState / us.state2020 - 1) * 100).toFixed(1)
 
         const updateUser = await User.findOneAndUpdate({ code: us.code }, { currentState: currentState, roiOverall: roiOverall, roi2022: roi2022 }, { runValidators: true, new: true });
