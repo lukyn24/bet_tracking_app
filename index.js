@@ -161,6 +161,7 @@ const modelateUsers = async () => {
         const userProfit = profit * unit * us.share;
         const currentState = us.state2020 + userProfit;
         const whithdrawals = us.whitdrawals;
+        console.log('whithdrawals', whithdrawals)
         const roiOverall = (((currentState + whithdrawals) / (us.deposits) - 1) * 100).toFixed(1);
         const roi2022 = ((currentState / us.state2020 - 1) * 100).toFixed(1)
 
